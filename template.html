@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+        #map {
+            height: @map_height;
+            width: @map_width;
+        }
+    </style>
+  </head>
+  <body>
+    <h1>@title</h1>
+    <div id="map">
+    </div>
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: @map_zoom,
+                center: @map_center,
+                mapTypeId: @map_type,
+                streetViewControl: @map_showpegman,
+                zoomControl: @map_showzoomcontrol
+            });
+            @marker
+        }
+
+      // Attaches an info window to a marker with the provided message
+      function attachInfoWindow(marker, message) {
+        var infowindow = new google.maps.InfoWindow({
+          content: message
+        });
+
+        marker.addListener('click', function() {
+          infowindow.open(marker.get('map'), marker);
+        });
+      }
+    </script>
+
+    <script async defer
+     src="https://maps.googleapis.com/maps/api/js?key=@api_key&callback=initMap">
+    </script>
+  </body>
+</html>
