@@ -20,6 +20,7 @@ def position_to_latLng(position):
     return '{{lat: {}, lng: {}}}'.format(lat, lng)
 
 def load_style()
+    pass
 
 
 class Map():
