@@ -36,6 +36,7 @@ config = dict(
     package_data=pkg_data,
     license='License :: OSI Approved :: MIT License',
     install_requires=install_requires,
+    include_package_data=True
 )
 
 setup(**config)
