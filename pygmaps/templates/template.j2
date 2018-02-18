@@ -27,7 +27,11 @@
                 mapTypeId: '{{ map_type }}',
                 streetViewControl: {{ show_pegman }},
                 zoomControl: {{ show_zoom_control }},
-                disableDefaultUI: {{ disable_default_ui }}
+                disableDefaultUI: {{ disable_default_ui }},
+                {% if style %}
+                styles: {{ style }},
+                {% endif %}
+
             });
             // @marker
         }

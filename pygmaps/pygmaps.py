@@ -4,8 +4,10 @@ import os
 
 from jinja2 import Environment, FileSystemLoader
 
-
-TEMPLATE = '/home/rafael/Documentos/Projetos/pyGmaps/templates/template.j2'
+this_dir, _ = os.path.split(__file__)
+TEMPLATE_DIR = 'templates'
+TEMPLATE_FILE = 'template.j2'
+TEMPLATE = os.path.join(this_dir, TEMPLATE_DIR, TEMPLATE_FILE)
 
 
 def render(tpl_path, context):
@@ -19,8 +21,13 @@ def position_to_latLng(position):
     lat, lng = position
     return '{{lat: {}, lng: {}}}'.format(lat, lng)
 
-def load_style()
-    pass
+
+def load_style(stylename):
+    STYLES_DIR = os.path.join(this_dir, 'styles')
+    stylefile = os.path.join(STYLES_DIR, stylename + '.txt')
+    with open(stylefile) as f:
+        style = f.read()
+    return style
 
 
 class Map():
@@ -49,7 +56,9 @@ class Map():
             self.zoom_start = zoom_start
         self.map_type = map_type
         if style:
-
+            self.style = load_style(style)
+        else:
+            self.style = style
         self.width = width
         self.height = height
         self.api_key = api_key
