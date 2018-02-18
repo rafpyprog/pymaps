@@ -3,25 +3,33 @@
   <head>
     <style>
         #map {
-            height: @map_height;
-            width: @map_width;
+            height: {{ height }};
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
         }
     </style>
   </head>
   <body>
-    <h1>@title</h1>
+    {% if title %}
+        <h1>{{ title }}</h1>
+    {% endif %}
     <div id="map">
+      <!-- Map will be placed here -->
     </div>
     <script>
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: @map_zoom,
-                center: @map_center,
-                mapTypeId: @map_type,
-                streetViewControl: @map_showpegman,
-                zoomControl: @map_showzoomcontrol
+                zoom: {{ zoom_start }},
+                center: {{ location }},
+                mapTypeId: '{{ map_type }}',
+                streetViewControl: {{ show_pegman }},
+                zoomControl: {{ show_zoom_control }},
+                disableDefaultUI: {{ disable_default_ui }}
             });
-            @marker
+            // @marker
         }
 
       // Attaches an info window to a marker with the provided message
@@ -37,7 +45,7 @@
     </script>
 
     <script async defer
-     src="https://maps.googleapis.com/maps/api/js?key=@api_key&callback=initMap">
+     src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap">
     </script>
   </body>
 </html>

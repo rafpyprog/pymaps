@@ -21,8 +21,12 @@ class LatLng(str):
 
 
 class Marker(str):
-    ''' A marker identifies a location on a map. '''
-    def __new__(self, position, icon=None, title='', gmap='map', info_window=None):
+    ''' A marker identifies a location on a map.
+     Parameters:
+    * location (tuple or list, default None) – Latitude and Longitude of Map (Northing, Easting).
+    '''
+    def __new__(self, location=None, icon=None, title='', gmap='map', info_window=None):
+
         self.attributes = {}
         self.attributes['position'] = LatLng(*position)
         self.attributes['map'] = gmap
@@ -109,14 +113,14 @@ class Map():
         html = html.replace('@map_center', self.center)
         html = html.replace('@map_zoom', str(self.zoom))
         html = html.replace('@map_type', f'"{self.map_type}"')
-        html = html.replace('@title', str(self.title))        
-        html = html.replace('@map_showpegman', str(self.show_pegman).lower())     
+        html = html.replace('@title', str(self.title))
+        html = html.replace('@map_showpegman', str(self.show_pegman).lower())
         assert isinstance(self.show_zoomcontrol, bool)
         html = html.replace('@map_showzoomcontrol', str(self.show_zoomcontrol).lower())
         return html
 
-    def show(self):   
+    def show(self):
         return display(HTML(self.html))
-    
+
     def __repr__(self):
         return BeautifulSoup(self.html, 'html.parser').prettify()

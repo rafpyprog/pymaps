@@ -1,0 +1,46 @@
+import os
+from setuptools import setup
+
+from .pygmaps.__init__ import __version__
+
+pkg_data = {'': ['templates/*.j2',
+                 'styles/*.txt',]}
+
+
+pkgs = ['pygmaps']
+
+# Dependencies
+with open('requirements.txt') as f:
+    dependencies = f.readlines()
+install_requires = [t.strip() for t in dependencies]
+
+
+config = dict(
+    name='pygmaps',
+    version=__version__,
+    description='Make beautiful maps with Google Maps JS API and Python',
+    long_description='',
+    author='Rafael Alves Ribeiro',
+    author_email='rafael.alves.ribeiro@gmail.com',
+    url='https://github.com/python-visualization/folium',
+    keywords='data visualization',
+    classifiers=[
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Topic :: Scientific/Engineering :: GIS',
+        'Topic :: Scientific/Engineering :: Visualization',
+        'License :: OSI Approved :: MIT License',
+        'Development Status :: 5 - Production/Stable'],
+    packages=pkgs,
+    package_data=pkg_data,
+    tests_require=['pytest'],
+    license=LICENSE,
+    install_requires=install_requires,
+    zip_safe=False,
+    cmdclass=versioneer.get_cmdclass(),
+)
+
+
+setup(**config)
