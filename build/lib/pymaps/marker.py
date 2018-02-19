@@ -1,5 +1,26 @@
+from jinja2 import Template
+
 from .utils import position_to_latLng
-from .mapelement import MapElement
+
+
+class MapElement():
+    def __init__(self, element_name):
+        self.element_name = element_name
+        self.template = ''
+
+    def render(self):
+        context = self.__dict__.copy()
+        context.pop('element_name')
+        context.pop('template')
+        return Template(self.template).render(**context)
+
+    @property
+    def html(self):
+        return self.render()
+
+    def add_to(self, map):
+        placeholder = 'var {} = "placeholder";'.format(self.element_name)
+        map.html = map.html.replace(placeholder, self.html + '\n' + placeholder)
 
 
 class Marker(MapElement):

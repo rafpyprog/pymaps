@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>{{ title if title != None else 'PyMaps' }}</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
     <style>
         #map {
             height: {{ height }};
@@ -29,13 +32,25 @@
                 zoomControl: {{ show_zoom_control }},
                 disableDefaultUI: {{ disable_default_ui }},
                 {% if style %}
-                styles: {{ style }},
+                  styles: {{ style }},
                 {% endif %}
-
             });
-            // >>marker
-            // >>map-label
-        }
+
+            {% if children is not none %}
+               // map markers
+               {% if children.marker is defined %}
+                 {% for marker in children.marker %}
+                   {{ marker.html }}
+                 {% endfor %}
+               {% endif %}
+
+               // fitBounds method
+               {% if children.fitbounds is defined %}
+                  {{ children.fitbounds[0].html }}
+               {% endif %}
+
+            {% endif %}
+        };
 
       // Attaches an info window to a marker with the provided message
       function attachInfoWindow(marker, message) {
@@ -46,7 +61,7 @@
         marker.addListener('click', function() {
           infowindow.open(marker.get('map'), marker);
         });
-      }
+      };
     </script>
 
     <script async defer
