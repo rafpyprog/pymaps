@@ -1,2 +1,2 @@
-css-html-js-minify.py
+css-html-js-minify
 jinja2
