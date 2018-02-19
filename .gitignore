@@ -1,6 +1,6 @@
-/buid
-/dist
-/pymaps.egg-info
+buid/
+dist/
+pymaps.egg-info/
 #pygmaps.py
 api_key.txt
 *.pyc
