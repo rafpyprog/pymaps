@@ -1,1 +1,3 @@
 include requirements.txt
+include ./pymaps/styles/*.*
+include ./pymaps/templates/*.*
