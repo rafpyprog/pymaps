@@ -38,7 +38,7 @@ class Marker(MapElement):
     '''
 
     def __init__(self, position, title='', label='', icon=None, draggable=False,
-                 animation=None, opacity=0, optimized=True):
+                 animation=None, opacity=1, optimized=True):
         super().__init__('marker')
         self.map = 'map'
         self.position = position_to_latLng(position)
