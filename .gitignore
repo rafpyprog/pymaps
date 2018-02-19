@@ -1,5 +1,9 @@
+/buid
 /dist
 /pymaps.egg-info
+#pygmaps.py
+api_key.txt
 *.pyc
 __pycache__
 .ipynb_checkpoints
+.gitignore

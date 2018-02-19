@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+        #map {
+            height: {{ height }};
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+  </head>
+  <body>
+    {% if title %}
+        <h1>{{ title }}</h1>
+    {% endif %}
+    <div id="map">
+      <!-- Map will be placed here -->
+    </div>
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: {{ zoom_start }},
+                center: {{ location }},
+                mapTypeId: '{{ map_type }}',
+                streetViewControl: {{ show_pegman }},
+                zoomControl: {{ show_zoom_control }},
+                disableDefaultUI: {{ disable_default_ui }},
+                {% if style %}
+                styles: {{ style }},
+                {% endif %}
+
+            });
+            // @marker
+        }
+
+      // Attaches an info window to a marker with the provided message
+      function attachInfoWindow(marker, message) {
+        var infowindow = new google.maps.InfoWindow({
+          content: message
+        });
+
+        marker.addListener('click', function() {
+          infowindow.open(marker.get('map'), marker);
+        });
+      }
+    </script>
+
+    <script async defer
+     src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap">
+    </script>
+  </body>
+</html>

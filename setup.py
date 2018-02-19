@@ -1,13 +1,13 @@
 import os
 from setuptools import setup
 
-from pygmaps.__init__ import __version__
+from pymaps.__init__ import __version__
 
 pkg_data = {'': ['templates/*.j2',
                  'styles/*.txt',]}
 
 
-pkgs = ['pygmaps']
+pkgs = ['pymaps']
 
 # Dependencies
 with open('requirements.txt') as f:
