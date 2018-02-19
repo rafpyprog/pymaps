@@ -1,4 +1,4 @@
-buid/
+buid/*
 dist/
 pymaps.egg-info/
 #pygmaps.py
