@@ -2,20 +2,6 @@ from .utils import position_to_latLng
 from .mapelement import MapElement
 
 
-class MarkerCluster(MapElement):
-    COLORS = ['blue', 'yellow', 'red', 'pink', 'purple']
-    def __init__(self, color='yellow'):
-        super().__init__('marker_cluster')
-        self.map = 'map'
-        self.color = color
-        image_url = ('https://raw.githubusercontent.com/googlemaps/'
-                     'v3-utility-library/master/markerclusterer/'
-                     'images/m{}.png').format
-        self.image_path = image_url(COLORS.index(self.color) + 1)        
-        self.template = ('''
-            var markerCluster = new MarkerClusterer({{ map }}, {{ markers }},
-                {imagePath: '{{ image_path }}'});''')
-
 class Marker(MapElement):
     '''A marker identifies a location on a map. By default, a marker uses a
     standard image. Markers can display custom images using the icon
@@ -84,3 +70,66 @@ class Marker(MapElement):
 
     def remove_animation(self):
         self.animation = 'null'
+
+
+class MarkerCluster(MapElement):
+    '''
+    A Marker Clusterer that clusters markers.
+
+    Parameters
+    ----------
+    * min_cluster_size: int, default 2
+        The minimum number of markers to be in a cluster before the markers
+        are hidden and a count is shown.
+
+    * grid_size: int, default 60
+        The grid size of a cluster in pixels.
+
+    * max_zoom: int, default None
+        The maximum zoom level that a marker can be part of a cluster.
+
+    * zoom_on_click: boolean, default True
+        Whether the default behaviour of clicking on a cluster is to zoom
+        into it.
+
+    * average_center: boolean, default False
+        Whether the center of each cluster should be the average of all
+        markers in the cluster.
+    '''
+    def __init__(self, min_cluster_size=2, grid_size=60, max_zoom=None,
+                 zoom_on_click=True, average_center=False):
+        super().__init__('marker_cluster')
+        self.map = 'map'
+        self.min_cluster_size = min_cluster_size
+        self.grid_size = grid_size
+        self.set_max_zoom(max_zoom)
+        self.zoom_on_click = str(zoom_on_click).lower()
+        self.average_center = str(average_center).lower()
+        self.grid_size = grid_size
+
+        self.image_path = ('https://raw.githubusercontent.com/googlemaps/'
+                           'js-marker-clusterer/gh-pages/images/m')
+
+        self.template = ('''
+            {% if children.marker is defined %}
+              var markers = [];
+              {% for marker in children.marker %}
+                {{ marker.html }}
+                marker.setMap(null);
+                markers.push(marker);
+              {% endfor %}
+            {% endif %}
+            var markerCluster = new MarkerClusterer({{ map }}, markers,
+                {imagePath: "{{ image_path }}",
+                 zoomOnClick: {{ zoom_on_click }},
+                 minimumClusterSize: {{ min_cluster_size }},
+                 gridSize: {{ grid_size }},
+                 maxZoom: {{ max_zoom }},
+                 averageCenter: {{ average_center }},
+                });''')
+
+    def set_max_zoom(self, max_zoom):
+        if max_zoom:
+            self.max_zoom = max_zoom
+        else:
+            self.max_zoom = 'null'

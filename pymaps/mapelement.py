@@ -6,6 +6,7 @@ class MapElement():
     def __init__(self, element_name):
         self.element_name = element_name
         self.template = ''
+        self.children = {}
 
     def render(self, minify=True):
         context = self.__dict__.copy()
@@ -19,6 +20,14 @@ class MapElement():
     @property
     def html(self):
         return self.render()
+
+    def add_child(self, child):
+        name = child.element_name
+        if self.children.get(name, False):
+            self.children[name].append(child)
+        else:
+            self.children[name] = []
+            self.children[name].append(child)
 
     def add_to(self, parent):
         parent.add_child(self)

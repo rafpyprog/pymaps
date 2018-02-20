@@ -50,6 +50,11 @@
                {% endif %}
 
                // MarkerCluster
+               {% if children.marker_cluster is defined %}
+                 {% for cluster in children.marker_cluster %}
+                   {{ cluster.html }}
+                 {% endfor %}
+               {% endif %}
 
             {% endif %}
         };
