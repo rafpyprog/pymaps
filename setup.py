@@ -30,8 +30,7 @@ config = dict(
     author_email='rafael.alves.ribeiro@gmail.com',
     url='https://github.com/rafpyprog/pygmaps.git',
     keywords='data visualization',
-    classifiers=[
-        'Programming Language :: Python :: 3.4',
+    classifiers=[        
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Topic :: Scientific/Engineering :: GIS',

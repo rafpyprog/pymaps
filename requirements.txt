@@ -1,3 +1,2 @@
 css-html-js-minify
 jinja2
-typing
