@@ -49,6 +49,8 @@
                   {{ children.fitbounds[0].html }}
                {% endif %}
 
+               // MarkerCluster
+
             {% endif %}
         };
 
@@ -64,6 +66,11 @@
       };
     </script>
 
+    {% if children.marker_cluster is defined %}
+      </script>
+        <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+      </script>
+    {% endif %}
     <script async defer
      src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap">
     </script>

@@ -2,6 +2,20 @@ from .utils import position_to_latLng
 from .mapelement import MapElement
 
 
+class MarkerCluster(MapElement):
+    COLORS = ['blue', 'yellow', 'red', 'pink', 'purple']
+    def __init__(self, color='yellow'):
+        super().__init__('marker_cluster')
+        self.map = 'map'
+        self.color = color
+        image_url = ('https://raw.githubusercontent.com/googlemaps/'
+                     'v3-utility-library/master/markerclusterer/'
+                     'images/m{}.png').format
+        self.image_path = image_url(COLORS.index(self.color) + 1)        
+        self.template = ('''
+            var markerCluster = new MarkerClusterer({{ map }}, {{ markers }},
+                {imagePath: '{{ image_path }}'});''')
+
 class Marker(MapElement):
     '''A marker identifies a location on a map. By default, a marker uses a
     standard image. Markers can display custom images using the icon
