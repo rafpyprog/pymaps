@@ -12,8 +12,9 @@
 
 .. image:: https://img.shields.io/pypi/pyversions/pymaps.svg
    :target: https://pypi.python.org/pypi/pymaps  
-     
-  
+   
+.. image:: https://img.shields.io/travis/rafpyprog/pymaps.svg  
+   :target: https://travis-ci.org/rafpyprog/pymaps
   
    
 PyMaps is a Python wrapper that allows you to create Goole Maps visualizations using Python only. The maps can be viewed on Jupyter notebooks or exported as HTML file.
