@@ -25,3 +25,11 @@ Installation
 .. code-block:: bash
 
     pip install pymaps
+
+
+Examples
+--------
+* Map styles
+    http://nbviewer.jupyter.org/github/rafpyprog/pymaps/blob/master/examples/map-styles.ipynb
+* Markers
+    http://nbviewer.jupyter.org/github/rafpyprog/pymaps/blob/master/examples/markers.ipynb
