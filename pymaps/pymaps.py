@@ -9,6 +9,7 @@ from css_html_js_minify.js_minifier import js_minify_keep_comments
 from .utils import position_to_latLng
 from .mapelement import MapElement
 
+__all__ = ['Map']
 
 this_dir, _ = os.path.split(__file__)
 TEMPLATE_DIR = 'templates'

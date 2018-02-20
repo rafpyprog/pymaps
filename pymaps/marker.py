@@ -25,10 +25,7 @@ class Marker(MapElement):
         self.label = label
         self.icon = icon
         self.draggable = str(draggable).lower()
-        if animation is not None:
-            self.animation = 'google.maps.Animation.' + animation
-        else:
-            self.animation = 'null'
+        self.set_animation(animation)
         self.opacity = opacity
         self.optimized = str(optimized).lower()
 
@@ -48,3 +45,19 @@ class Marker(MapElement):
               opacity: {{ opacity }},
               optimized: {{ optimized }}
             });''')
+
+    def set_animation(self, animation=None):
+        ''' Specify the way a marker is animated.
+
+        Parameters
+        ----------
+        * animation : {'BOUNCE', 'DROP', None}, default None
+        '''
+
+        if animation is None:
+            self.animation = 'null'
+        else:
+            self.animation = 'google.maps.Animation.' + animation
+
+    def remove_animation(self):
+        self.animation = 'null'

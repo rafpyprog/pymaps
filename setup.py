@@ -1,7 +1,14 @@
 import os
+import re
 from setuptools import setup
 
-from pymaps.__init__ import __version__
+here = os.path.abspath(os.path.dirname(__file__))
+
+version_file = os.path.join(here, 'pymaps', '__init__.py')
+with open(version_file) as init:
+    version_file = init.read()
+version_pattern = '[0-9]{1,2}\.[0-9]{1,2}.[0-9]{1,2}'
+version = re.search(version_pattern, version_file).group()
 
 pkg_data = {'': ['templates/*.j2',
                  'styles/*.txt',]}
@@ -14,10 +21,9 @@ with open('requirements.txt') as f:
     dependencies = f.readlines()
 install_requires = [t.strip() for t in dependencies]
 
-
 config = dict(
     name='pymaps',
-    version=__version__,
+    version=version,
     description='Make beautiful maps with Google Maps JS API and Python',
     long_description='',
     author='Rafael Alves Ribeiro',
