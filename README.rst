@@ -1,3 +1,7 @@
+.. image:: https://img.shields.io/pypi/v/pymaps.svg
+   :target: https://pypi.python.org/pypi/pymaps
+
+
 |pic 1| **PyMaps**
 ==================
 
