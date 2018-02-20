@@ -47,13 +47,22 @@ class Marker(MapElement):
             });''')
 
     def set_animation(self, animation=None):
-        ''' Specify the way a marker is animated.
+        '''
+        Specify the way a marker is animated.
+
+        * DROP indicates that the marker should drop from the top of the
+          map to its final location when first placed on the map. Animation
+          will cease once the marker comes to rest and animation will
+          revert to null.
+
+        * BOUNCE indicates that the marker should bounce in place. A bouncing
+          marker will continue bouncing until its animation property is
+          explicitly set to null.
 
         Parameters
         ----------
         * animation : {'BOUNCE', 'DROP', None}, default None
         '''
-
         if animation is None:
             self.animation = 'null'
         else:
