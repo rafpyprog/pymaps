@@ -142,7 +142,7 @@ class Map():
         '''
         STYLES_DIR = os.path.join(this_dir, 'styles')
 
-        is_built_in = glob.glob(os.path.join(STYLES_DIR, style + '.txt')) != []
+        is_built_in = glob.glob(os.path.join(STYLES_DIR, style + '.txt')) != []        
         if is_built_in:
             style_file = os.path.join(STYLES_DIR, style + '.txt')
             with open(style_file) as f:
