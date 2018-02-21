@@ -4,6 +4,7 @@ dist/
 pymaps.egg-info/
 #pygmaps.py
 api_key.txt
+*.pdf
 *.pyc
 __pycache__
 .ipynb_checkpoints
