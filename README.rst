@@ -29,7 +29,8 @@ Installation
 
 Examples
 --------
-* Map styles
-    http://nbviewer.jupyter.org/github/rafpyprog/pymaps/blob/master/examples/map-styles.ipynb
-* Markers
-    http://nbviewer.jupyter.org/github/rafpyprog/pymaps/blob/master/examples/markers.ipynb
+* `Map styles
+  <http://nbviewer.jupyter.org/github/rafpyprog/pymaps/blob/master/examples/map-styles.ipynb?flush_cache=true>`_
+* `Markers
+  <http://nbviewer.jupyter.org/github/rafpyprog/pymaps/blob/master/examples/markers.ipynb?flush_cache=true>`_
+  
