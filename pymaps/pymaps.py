@@ -1,4 +1,5 @@
 import base64
+import glob
 import json
 from operator import itemgetter
 import os
@@ -127,12 +128,33 @@ class Map():
         bounds = FitBounds(coordinates)
         self.add_child(bounds)
 
-    def set_style(self, stylename):
+    def set_style(self, style):
+        '''
+        Set map style using the built-in styles or a custom style.
+        More about styling at:
+        https://developers.google.com/maps/documentation/javascript/styling
+
+        Parameters
+        ----------
+        * style: str, {'aubergine', 'dark', 'grayscale', 'night', 'old',
+            'redberry', 'retro', 'silver', 'water', 'wine'}, or valid JSON
+            string.
+        '''
         STYLES_DIR = os.path.join(this_dir, 'styles')
-        stylefile = os.path.join(STYLES_DIR, stylename + '.txt')
-        with open(stylefile) as f:
-            style = f.read()
-        self.style = style
+
+        is_built_in = glob.glob(os.path.join(STYLES_DIR, style + '.txt')) != []
+        if is_built_in:
+            style_file = os.path.join(STYLES_DIR, style + '.txt')
+            with open(style_file) as f:
+                style_config = f.read()
+            self.style = style_config
+        else:
+            try:
+                json.loads(style)
+            except json.JSONDecodeError:
+                raise json.JSONDecoder('Style must be a valid JSON.')
+            else:
+                self.style = style
 
     def _html(self):
         html = render(self.template_file, self.__dict__)
