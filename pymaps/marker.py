@@ -20,6 +20,7 @@ class Marker(MapElement):
                  animation=None, opacity=1, optimized=True):
         super().__init__('marker')
         self.map = 'map'
+        self.lat, self.lgn = position
         self.position = position_to_latLng(position)
         self.title = title
         self.label = label

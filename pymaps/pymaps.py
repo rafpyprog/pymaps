@@ -50,6 +50,9 @@ class FitBounds(MapElement):
                              map.fitBounds(bounds);''')
 
     def calc_bounds(self, coordinates):
+        if len(coordinates) == 1:
+            return coordinates[0], coordinates[0]
+
         min_lat = min(coord[0] for coord in coordinates)
         max_lat = max(coord[0] for coord in coordinates)
 
@@ -59,7 +62,6 @@ class FitBounds(MapElement):
         sw = position_to_latLng([min_lat, min_lgn])
         ne = position_to_latLng([max_lat, max_lgn])
         return sw, ne
-
 
 
 class Map():
@@ -89,16 +91,19 @@ class Map():
     '''
 
     def __init__(self, location=None, map_type='roadmap', style=None,
-                 width='100%',
-                 height='500px', zoom_start=10, show_pegman=True,
+                 width='100%', height='500px', zoom_start=10, show_pegman=True,
                  show_zoom_control=True, disable_default_ui=False,
                  title=None, api_key=""):
         self.template_file = TEMPLATE
 
         if not location:
             # If location is not passed we center and zoom out.
+            self.initial_location_is_set = False
             self.location = position_to_latLng([0, 0])
-            self.zoom_start = 1
+            if zoom_start == 10:
+                self.zoom_start = 1
+            else:
+                self.zoom_start = zoom_start
         else:
             self.location = position_to_latLng(location)
             self.zoom_start = zoom_start
@@ -142,7 +147,7 @@ class Map():
         '''
         STYLES_DIR = os.path.join(this_dir, 'styles')
 
-        is_built_in = glob.glob(os.path.join(STYLES_DIR, style + '.txt')) != []        
+        is_built_in = glob.glob(os.path.join(STYLES_DIR, style + '.txt')) != []
         if is_built_in:
             style_file = os.path.join(STYLES_DIR, style + '.txt')
             with open(style_file) as f:
@@ -157,6 +162,18 @@ class Map():
                 self.style = style
 
     def _html(self):
+        # If the map was created without an initial location and it has any
+        # child markers, use the markers as location to center the map.
+        map_has_markers = 'marker' in self.children
+        if self.initial_location_is_set is False and map_has_markers:
+            markers = self.children['marker']
+            if len(markers) == 1:
+                lat, lgn = markers[0].lat, markers[0].lgn
+                self.location = position_to_latLng([lat, lgn])
+            else:
+                coordinates = [(i.lat, i.lgn) for i in markers]
+                self.fit_bounds(coordinates)
+
         html = render(self.template_file, self.__dict__)
         return html
 
