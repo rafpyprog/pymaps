@@ -91,22 +91,19 @@ class Map():
     '''
 
     def __init__(self, location=None, map_type='roadmap', style=None,
-                 width='100%', height='500px', zoom_start=10, show_pegman=True,
+                 width='100%', height='500px', zoom_start=None, show_pegman=True,
                  show_zoom_control=True, disable_default_ui=False,
                  title=None, api_key=""):
         self.template_file = TEMPLATE
 
-        if not location:
+        if location is None:
             # If location is not passed we center and zoom out.
             self.initial_location_is_set = False
             self.location = position_to_latLng([0, 0])
-            if zoom_start == 10:
-                self.zoom_start = 1
-            else:
-                self.zoom_start = zoom_start
+            self.zoom_start = zoom_start or 1
         else:
             self.location = position_to_latLng(location)
-            self.zoom_start = zoom_start
+            self.zoom_start = zoom_start or 10
 
         self.map_type = map_type
 
