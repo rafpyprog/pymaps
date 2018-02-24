@@ -57,7 +57,7 @@ for name in templates:
     make_doc(name, title=templates[name]['title'])
 
 
-#d = open('/home/rafael/Documentos/Projetos/pyGmaps/docs/templates/tpl-map-styles.ipynb').read()
-#d.find('["{')
-#d[1511:]
-#d[1511:].replace('["{%header%}"]', 'KKKK')
+for notebook in glob.glob('*.ipynb'):
+    print('Running {}'.format(notebook))
+    cmd = 'jupyter nbconvert --execute --to notebook --inplace {}'.format(notebook)
+    os.system(cmd)
