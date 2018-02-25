@@ -2,7 +2,7 @@
 echo ---------------------------------------------------------------------------
 echo RUNNING TESTS
 echo ---------------------------------------------------------------------------
-python3 -m pytest
+python3 -m pytest --cov=./
 if [ $? -eq 1 ]
 then
   echo 'Error: tests are not passing.'
