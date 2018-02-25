@@ -16,7 +16,7 @@
 .. image:: https://img.shields.io/travis/rafpyprog/pymaps.svg
    :target: https://travis-ci.org/rafpyprog/pymaps
 
-.. image:: https://img.shields.io/codecov/c/github/rafpyprog/pymaps.svg   :alt: Codecov
+.. image:: https://img.shields.io/codecov/c/github/rafpyprog/pymaps.svg
    :target: https://codecov.io/gh/rafpyprog/pymaps
 
 
