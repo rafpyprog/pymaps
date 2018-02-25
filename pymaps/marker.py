@@ -15,10 +15,10 @@ class Marker(MapElement):
     * draggable
     * animation: DROP, BOUNCE
     '''
-
+    NAME = 'marker'
     def __init__(self, position, title='', label='', icon=None, draggable=False,
                  animation=None, opacity=1, optimized=True):
-        super().__init__('marker')
+        super().__init__(self.NAME)
         self.map = 'map'
         self.lat, self.lgn = position
         self.position = position_to_latLng(position)
@@ -97,9 +97,10 @@ class MarkerCluster(MapElement):
         Whether the center of each cluster should be the average of all
         markers in the cluster.
     '''
+    NAME = 'marker_cluster'
     def __init__(self, min_cluster_size=2, grid_size=60, max_zoom=None,
                  zoom_on_click=True, average_center=False):
-        super().__init__('marker_cluster')
+        super().__init__(self.NAME)
         self.map = 'map'
         self.min_cluster_size = min_cluster_size
         self.grid_size = grid_size

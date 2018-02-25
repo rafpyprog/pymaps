@@ -7,7 +7,8 @@ import os
 from jinja2 import Environment, FileSystemLoader
 from css_html_js_minify.js_minifier import js_minify_keep_comments
 
-from .utils import position_to_latLng
+from .marker import Marker, MarkerCluster
+from .utils import position_to_latLng, calc_avg_position
 from .mapelement import MapElement
 
 
@@ -69,12 +70,12 @@ class Map():
 
     Parameters
     ----------
-    * location
+    * center
     * map_type
     * style
     * width
     * height
-    * zoom_start
+    * zoom
     * show_pegman
     * show_zoom_control
     * disable_default_ui
@@ -90,21 +91,16 @@ class Map():
     --------
     '''
 
-    def __init__(self, location=None, map_type='roadmap', style=None,
-                 width='100%', height='500px', zoom_start=None, show_pegman=True,
+    def __init__(self, center=None, map_type='roadmap', style=None,
+                 width='100%', height='500px', zoom=1, show_pegman=True,
                  show_zoom_control=True, disable_default_ui=False,
                  title=None, api_key=""):
+
+        self.children = {}
+        self.center = center
+        self.set_zoom(zoom)
+
         self.template_file = TEMPLATE
-
-        if location is None:
-            # If location is not passed we center and zoom out.
-            self.initial_location_is_set = False
-            self.location = position_to_latLng([0, 0])
-            self.zoom_start = zoom_start or 1
-        else:
-            self.location = position_to_latLng(location)
-            self.zoom_start = zoom_start or 10
-
         self.map_type = map_type
 
         if style is not None:
@@ -124,7 +120,45 @@ class Map():
         self.show_zoom_control = int(show_zoom_control)
         self.disable_default_ui = int(disable_default_ui)
         self.title = title
-        self.children = {}
+
+
+    @property
+    def has_marker(self):
+        return Marker.NAME in self.children
+
+    @property
+    def has_cluster(self):
+        return MarkerCluster.NAME in self.children
+
+    def set_center(self, center=None):
+        if center is None:
+            # Se não houver nenhum elemento no mapa, centraliza no ponto 0
+            if not any([self.has_marker, self.has_cluster]):
+                self.center = position_to_latLng([0, 0])
+            # Se houver algum ponto centraliza no ponto médio
+            else:
+                marks = []
+                markers = self.children.get(Marker.NAME, None)
+                clusters = self.children.get(MarkerCluster.NAME, None)
+                if markers:
+                    latlng = [(i.lat, i.lgn) for i in markers]
+                    marks.extend(latlng)
+                if clusters:
+                    for cluster in clusters:
+                        markers = cluster.children.get('marker', None)
+                        if markers:
+                            latlng = [(i.lat, i.lgn) for i in markers]
+                            marks.extend(latlng)
+                # calculate center
+                avg_position = calc_avg_position(marks)
+                self.center = position_to_latLng(avg_position)
+        else:
+            if isinstance(center, (list, tuple)):
+                self.center = position_to_latLng(center)
+
+    def set_zoom(self, zoom):
+        self.zoom = zoom
+        pass
 
     def fit_bounds(self, coordinates):
         bounds = FitBounds(coordinates)
@@ -159,18 +193,7 @@ class Map():
                 self.style = style
 
     def _html(self):
-        # If the map was created without an initial location and it has any
-        # child markers, use the markers as location to center the map.
-        map_has_markers = 'marker' in self.children
-        if self.initial_location_is_set is False and map_has_markers:
-            markers = self.children['marker']
-            if len(markers) == 1:
-                lat, lgn = markers[0].lat, markers[0].lgn
-                self.location = position_to_latLng([lat, lgn])
-            else:
-                coordinates = [(i.lat, i.lgn) for i in markers]
-                self.fit_bounds(coordinates)
-
+        self.set_center(self.center)
         html = render(self.template_file, self.__dict__)
         return html
 

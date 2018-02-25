@@ -56,8 +56,10 @@ templates = {'map-styles': {'title': 'Styles'},
 for name in templates:
     make_doc(name, title=templates[name]['title'])
 
-
+print('Building docs at: {}'.format(os.getcwd()))
 for notebook in glob.glob('*.ipynb'):
     print('Running {}'.format(notebook))
     cmd = 'jupyter nbconvert --execute --to notebook --inplace {}'.format(notebook)
+    os.system(cmd)
+    cmd = 'jupyter trust {}'.format(notebook)
     os.system(cmd)
