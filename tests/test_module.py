@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import pytest
 
-from pymaps import Map
+from pymaps import Map, FitBounds
 from pymaps.marker import Marker, MarkerCluster
 from pymaps.utils import position_to_latLng, calc_avg_position
 
@@ -130,3 +130,20 @@ def test_set_map_builtin_style():
         style_config = f.read()
 
     assert map.style == style_config
+
+
+def test_fitbounds():
+    coordinates = [(10, 5), (-10, -5), (100, -80)]
+    fitbounds = FitBounds(coordinates)
+
+    assert fitbounds.ne == '{lat: 100, lng: 5}'
+    assert fitbounds.sw == '{lat: -10, lng: -80}'
+
+
+def test_map_fitbounds():
+    coordinates = [(10, 5), (-10, -5), (100, -80)]
+    map = Map(api_key=API_KEY)
+    map.fit_bounds(coordinates)
+    assert FitBounds.NAME in map.children
+    html = map.html
+    assert 'map.fitBounds' in html

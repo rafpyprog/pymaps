@@ -34,8 +34,9 @@ class FitBounds(MapElement):
     ----------
     * bounds: list or tuple of geografical coordinates (lat, long)
     '''
+    NAME = 'fitbounds'
     def __init__(self, coordinates):
-        super().__init__('fitbounds')
+        super().__init__(self.NAME)
         self.coordinates = coordinates
         self.sw, self.ne = self.calc_bounds(self.coordinates)
         self.template = (''' var bounds = new google.maps.LatLngBounds(
