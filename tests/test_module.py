@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import pytest
 
 from pymaps import Map
@@ -114,3 +115,18 @@ def test_zoom_none_fitbounds():
         Marker(i).add_to(map)
     map.html
     assert map.zoom == 2
+
+
+def test_set_map_builtin_style():
+    map = Map(api_key=API_KEY)
+    style = 'aubergine'
+    map.set_style('aubergine')
+
+    this_dir, _ = os.path.split(__file__)
+    root_dir = os.path.dirname(this_dir)
+    stylefile = Path(root_dir)/'pymaps'/'styles'/(style + '.txt')
+
+    with open(stylefile) as f:
+        style_config = f.read()
+
+    assert map.style == style_config

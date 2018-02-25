@@ -26,14 +26,6 @@ def render(tpl_path, context):
     return html
 
 
-def load_style(stylename):
-    STYLES_DIR = os.path.join(this_dir, 'styles')
-    stylefile = os.path.join(STYLES_DIR, stylename + '.txt')
-    with open(stylefile) as f:
-        style = f.read()
-    return style
-
-
 class FitBounds(MapElement):
     ''' Sets the viewport to contain the given bounds, using a rectangle
     from the points at its south-west and north-east corners.
