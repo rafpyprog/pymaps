@@ -9,5 +9,5 @@ script: pytest --cov=./
 branches:
   only:
     - master
-fter_success:
+after_success:
   - codecov
