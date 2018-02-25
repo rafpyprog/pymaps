@@ -92,13 +92,13 @@ class Map():
     '''
 
     def __init__(self, center=None, map_type='roadmap', style=None,
-                 width='100%', height='500px', zoom=1, show_pegman=True,
+                 width='100%', height='500px', zoom=None, show_pegman=True,
                  show_zoom_control=True, disable_default_ui=False,
                  title=None, api_key=""):
 
         self.children = {}
         self.center = center
-        self.set_zoom(zoom)
+        self.zoom = zoom
 
         self.template_file = TEMPLATE
         self.map_type = map_type
@@ -121,7 +121,6 @@ class Map():
         self.disable_default_ui = int(disable_default_ui)
         self.title = title
 
-
     @property
     def has_marker(self):
         return Marker.NAME in self.children
@@ -130,35 +129,40 @@ class Map():
     def has_cluster(self):
         return MarkerCluster.NAME in self.children
 
-    def set_center(self, center=None):
-        if center is None:
-            # Se não houver nenhum elemento no mapa, centraliza no ponto 0
-            if not any([self.has_marker, self.has_cluster]):
-                self.center = position_to_latLng([0, 0])
-            # Se houver algum ponto centraliza no ponto médio
-            else:
-                marks = []
-                markers = self.children.get(Marker.NAME, None)
-                clusters = self.children.get(MarkerCluster.NAME, None)
+    @property
+    def markers(self):
+        marks = []
+        markers = self.children.get(Marker.NAME, None)
+        clusters = self.children.get(MarkerCluster.NAME, None)
+        if markers:
+            latlng = [(i.lat, i.lgn) for i in markers]
+            marks.extend(latlng)
+        if clusters:
+            for cluster in clusters:
+                markers = cluster.children.get('marker', None)
+                latlng = [(i.lat, i.lgn) for i in markers]
                 if markers:
-                    latlng = [(i.lat, i.lgn) for i in markers]
                     marks.extend(latlng)
-                if clusters:
-                    for cluster in clusters:
-                        markers = cluster.children.get('marker', None)
-                        if markers:
-                            latlng = [(i.lat, i.lgn) for i in markers]
-                            marks.extend(latlng)
-                # calculate center
-                avg_position = calc_avg_position(marks)
-                self.center = position_to_latLng(avg_position)
-        else:
-            if isinstance(center, (list, tuple)):
-                self.center = position_to_latLng(center)
+        return marks
 
-    def set_zoom(self, zoom):
-        self.zoom = zoom
-        pass
+    @property
+    def zoom(self):
+        return self._zoom
+
+    @zoom.setter
+    def zoom(self, value):
+        self._zoom = value
+
+    @property
+    def center(self):
+        return self._center
+
+    @center.setter
+    def center(self, value):
+        if value is not None:
+            self._center = position_to_latLng(value)
+        else:
+            self._center = None
 
     def fit_bounds(self, coordinates):
         bounds = FitBounds(coordinates)
@@ -193,8 +197,26 @@ class Map():
                 self.style = style
 
     def _html(self):
-        self.set_center(self.center)
-        html = render(self.template_file, self.__dict__)
+        # ensure map has a center setted
+        if self.center is None:
+            if any([self.has_marker, self.has_cluster]):
+                avg_position = calc_avg_position(self.markers)
+                self.center = avg_position
+            else:
+                self.center = (0, 0)
+
+        # if zoom is none zoom out and or close up if just one marker
+        if self.zoom is None:
+            if self.markers == [] or len(self.markers) > 1:
+                self.zoom = 2
+            else:
+                self.zoom = 14
+
+        self.context = self.__dict__
+        self.context['center'] = self.center
+        self.context['zoom'] = self.zoom
+
+        html = render(self.template_file, self.context)
         return html
 
     @property

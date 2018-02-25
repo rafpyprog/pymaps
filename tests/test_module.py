@@ -87,3 +87,30 @@ def test_map_center_average_cluster_markers_and_markers_position():
     Marker([10, 10]).add_to(map)
     map.html
     assert map.center == '{lat: 13.333333, lng: 13.333333}'
+
+
+def test_set_center():
+    map = Map(api_key=API_KEY)
+    map.center = (10, 10)
+    assert map.center == '{lat: 10, lng: 10}'
+
+
+def test_zoom_none_set_1_withoutmarkers():
+    map = Map(api_key=API_KEY)
+    map.html
+    assert map.zoom == 2
+
+
+def test_zoom_none_set_value():
+    map = Map(api_key=API_KEY, zoom=14)
+    map.html
+    assert map.zoom == 14
+
+
+def test_zoom_none_fitbounds():
+    map = Map(api_key=API_KEY)
+    markers = [(10, 10), (20, 20)]
+    for i in markers:
+        Marker(i).add_to(map)
+    map.html
+    assert map.zoom == 2

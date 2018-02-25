@@ -1,8 +1,12 @@
 language: python
-python:  
+python:
   - "3.5"
   - "3.6"
+install:
+  - pip install codecov
 script: pytest
 branches:
   only:
     - master
+fter_success:
+  - codecov
