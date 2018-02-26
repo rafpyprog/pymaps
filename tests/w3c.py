@@ -16,12 +16,13 @@ def w3c_validator(document, output='json'):
     headers = {'Content-Type': 'text/html; charset=utf-8'}
     response = requests.post(w3c_validator, data=document, headers=headers)
     response.raise_for_status()
+    w3c_result = response.content.decode()
 
     if output == 'json':
-        results = json.loads(response.content)['messages']
+        results = json.loads(w3c_result)['messages']
         if results:
             return results
         else:
             return True
     else:
-        return response.content
+        return w3c_result
