@@ -43,7 +43,7 @@ config = dict(
     install_requires=install_requires,
     setup_requires=['pytest-runner'],
     tests_require=[
-        'pytest', 'pytest-runner', 'requests', 'codecov', 'pytest-cov'
+        'pytest', 'pytest-cov', 'requests',
     ],
     include_package_data=True
 )

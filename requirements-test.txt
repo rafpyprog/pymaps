@@ -2,3 +2,4 @@ codecov
 requests
 pytest
 pytest-cov
+pytest-runner

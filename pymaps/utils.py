@@ -6,11 +6,6 @@ def position_to_latLng(position):
     return '{{lat: {}, lng: {}}}'.format(lat, lng)
 
 
-def jsbool(value):
-    return str(value).lower
-
-
-
 def calc_avg_position(coordinates):
     '''
     Calculate the average position of a list of lat, long coordinates.
