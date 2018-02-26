@@ -1,8 +1,6 @@
 import os
 import json
 import requests
-from bs4 import BeautifulSoup
-from subprocess import PIPE, Popen
 
 
 def w3c_validator(document, output='json'):
