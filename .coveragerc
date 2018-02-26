@@ -1,0 +1,5 @@
+[run]
+omit = ./eggs*
+       tests/w3c.py
+       setup.py
+       tests/*
