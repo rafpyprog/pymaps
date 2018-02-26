@@ -3,9 +3,8 @@ python:
   - "3.5"
   - "3.6"
 install:
-  - pip install -r requirements.txt
-  - pip install pytest pytest-cov codecov
-script: pytest --cov=./
+  - pip install -r requirements.txt  
+script: python setup.py test
 branches:
   only:
     - master

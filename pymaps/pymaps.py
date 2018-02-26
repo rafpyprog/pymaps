@@ -44,17 +44,17 @@ class FitBounds(MapElement):
                              map.fitBounds(bounds);''')
 
     def calc_bounds(self, coordinates):
-        if len(coordinates) == 1:
-            return coordinates[0], coordinates[0]
+        if not all(isinstance(i, (tuple, list)) for i in coordinates):
+            sw = ne = position_to_latLng(coordinates)
+        else:
+            min_lat = min(coord[0] for coord in coordinates)
+            max_lat = max(coord[0] for coord in coordinates)
 
-        min_lat = min(coord[0] for coord in coordinates)
-        max_lat = max(coord[0] for coord in coordinates)
+            min_lgn = min(coord[1] for coord in coordinates)
+            max_lgn = max(coord[1] for coord in coordinates)
 
-        min_lgn = min(coord[1] for coord in coordinates)
-        max_lgn = max(coord[1] for coord in coordinates)
-
-        sw = position_to_latLng([min_lat, min_lgn])
-        ne = position_to_latLng([max_lat, max_lgn])
+            sw = position_to_latLng([min_lat, min_lgn])
+            ne = position_to_latLng([max_lat, max_lgn])
         return sw, ne
 
 

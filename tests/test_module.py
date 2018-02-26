@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 import pytest
@@ -5,6 +6,8 @@ import pytest
 from pymaps import Map, FitBounds
 from pymaps.marker import Marker, MarkerCluster
 from pymaps.utils import position_to_latLng, calc_avg_position
+
+from .w3c import w3c_validator
 
 
 API_KEY = os.environ['MAPS_API_KEY']
@@ -132,7 +135,42 @@ def test_set_map_builtin_style():
     assert map.style == style_config
 
 
+def test_set_map_custom_style():
+    style = '''[
+      {
+        "featureType": "all",
+        "elementType": "labels",
+        "stylers": [
+          { "visibility": "off" }
+        ]
+      }
+    ]'''
+
+    map = Map(api_key=API_KEY, style=style)
+    assert map.style == style
+
+
+def test_invalid_custom_style_raise_jsondecodeerror():
+    def test_set_map_custom_style():
+        invalid_style = '''[
+          {
+            "featureType": "all",
+            "elementType": labels,
+            "stylers": [
+              { "visibility": "off" }
+            ]
+          }
+        ]'''
+        with json.JSONDecodeError:
+            map = Map(api_key=API_KEY, style=invalid_style)
+
+
 def test_fitbounds():
+    coordinates = (10, 5)
+    fitbounds = FitBounds(coordinates)
+    assert fitbounds.ne == '{lat: 10, lng: 5}'
+    assert fitbounds.sw == '{lat: 10, lng: 5}'
+
     coordinates = [(10, 5), (-10, -5), (100, -80)]
     fitbounds = FitBounds(coordinates)
 
@@ -147,3 +185,10 @@ def test_map_fitbounds():
     assert FitBounds.NAME in map.children
     html = map.html
     assert 'map.fitBounds' in html
+
+
+def test_map_repr_is_valid_html():
+    map = Map(api_key=API_KEY)
+    HTML = map._repr_html_()
+    assert w3c_validator(map.html) is True
+    assert isinstance(HTML, str)

@@ -30,7 +30,7 @@ config = dict(
     author_email='rafael.alves.ribeiro@gmail.com',
     url='https://github.com/rafpyprog/pygmaps.git',
     keywords='data visualization',
-    classifiers=[        
+    classifiers=[
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Topic :: Scientific/Engineering :: GIS',
@@ -41,6 +41,10 @@ config = dict(
     package_data=pkg_data,
     license='License :: OSI Approved :: MIT License',
     install_requires=install_requires,
+    setup_requires=['pytest-runner'],
+    tests_require=[
+        'pytest', 'pytest-runner', 'requests', 'codecov', 'pytest-cov'
+    ],
     include_package_data=True
 )
 
