@@ -1,4 +1,0 @@
-ignore:
-  - "setup.py"
-  - ".eggs/*"
-  - ".tests/w3c.py"
