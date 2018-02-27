@@ -14,8 +14,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--version", help="number of the new package version")
     parser.add_argument("--gitpush", help="message for commit and push to Github")
+    parser.add_argument("--pypi", action='store_true', help="Release a new version of the package on Pypi")
     args = parser.parse_args()
-    print(args)
 
     if args.version:
         msg = '-' * 80 + '\nUPDATING PACKAGE VERSION TO {}\n' + '-' * 80
@@ -32,6 +32,7 @@ if __name__ == '__main__':
     tests = 'setup.py test'
     docs = 'docs.py'
     install = 'setup.py install'
+    pypi = 'setup.py sdist upload'
 
     print('-' * 80 + '\nRUNNING TESTS\n' + '-' * 80)
     r = os.system(' '.join([PYTHON, tests]))
@@ -60,3 +61,9 @@ if __name__ == '__main__':
         os.system('git commit -m "{}"'.format(args.gitpush))
         print('Git push')
         os.system('git push')
+
+    print('-' * 80 + '\nUPLOAD TO PYPI\n' + '-' * 80)
+    if args.pypi:
+        os.system(' '.join([PYTHON, pypi]))
+        os.system('git tag {}'.format(args.version))
+        os.system('git push origin --tags')
