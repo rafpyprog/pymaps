@@ -1,6 +1,6 @@
 from .utils import position_to_latLng
 from .mapelement import MapElement
-
+from .icon import Icon
 
 class Marker(MapElement):
     '''A marker identifies a location on a map. By default, a marker uses a
@@ -24,7 +24,10 @@ class Marker(MapElement):
         self.position = position_to_latLng(position)
         self.title = title
         self.label = label
-        self.icon = icon
+        if isinstance(icon, Icon):
+            self.icon = icon.url
+        else:
+            self.icon = icon
         self.draggable = str(draggable).lower()
         self.set_animation(animation)
         self.opacity = opacity

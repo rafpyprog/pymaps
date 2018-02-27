@@ -4,7 +4,7 @@ from setuptools import setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-version_file = os.path.join(here, 'pymaps', '__init__.py')
+version_file = os.path.join(here, 'pymaps', '__version__.py')
 with open(version_file) as init:
     version_file = init.read()
 version_pattern = '[0-9]{1,2}\.[0-9]{1,2}.[0-9]{1,2}'

@@ -5,7 +5,8 @@ import pytest
 
 from pymaps import Map, FitBounds
 from pymaps.marker import Marker, MarkerCluster
-from pymaps.utils import position_to_latLng, calc_avg_position
+from pymaps.utils import position_to_latLng, calc_avg_position, random_latlng
+from pymaps.icon import *
 
 from .w3c import w3c_validator
 
@@ -192,3 +193,30 @@ def test_map_repr_is_valid_html():
     HTML = map._repr_html_()
     assert w3c_validator(map.html) is True
     assert isinstance(HTML, str)
+
+
+def test_instanciate_icon():
+    icon = Icon()
+    assert icon.name == 'pin'
+    assert icon.color == COLORS['red']
+    assert icon.url == url_picker('pin').format(*COLORS['red'], 1)
+
+
+def test_instanciate_custom_color_icon():
+    color = ('#ffffff', '#ffffff')
+    icon = Icon(color=color)
+    assert icon.name == 'pin'
+    assert icon.color == [c.replace('#', '') for c in color]
+
+
+def test_color_picker_custom_icon_color_none():
+    shape = 'airport'
+    color = None
+    color = color_picker(color, shape)
+    assert color == COLORS['bluewhite']
+
+
+def test_random_lat_lng():
+    lat, lng = random_latlng()
+    assert -85 <= lat <= 85
+    assert -180 <= lng <= 180
